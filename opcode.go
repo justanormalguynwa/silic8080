@@ -72,7 +72,6 @@ var op = map[uint8]string{
 	0xF8: "RM", 0xF9: "SPHL", 0xFA: "JM adr", 0xFB: "EI",
 	0xFC: "CM adr", 0xFE: "CPI D8", 0xFF: "RST 7",
 }
-
 var opsize = map[uint8]int{
 	// im not putting comment just read hex and guess it yourself
 	0x00: 1, 0x02: 1, 0x03: 1, 0x04: 1, 0x05: 1, 0x07: 1,
