@@ -47,11 +47,11 @@ func (cpu *CPU) fetchWord() uint16 {
 
 // execute one instruction i implemented like 5 :mewhenthe:
 func (cpu *CPU) step() {
-	op := cpu.fetch()
-	mnemonic := op[op] // from opcode.go nword
-	fmt.Printf("PC=%04X OP=%02X %-10s\n", cpu.PC-1, op, mnemonic)
+	opcode := cpu.fetch()
+	mnemonic := op[opcode] // from opcode.go nword
+	fmt.Printf("PC=%04X OP=%02X %-10s\n", cpu.PC-1, opcode, mnemonic)
 
-	switch op {
+	switch opcode {
 	case 0x00: // NOP
 		// nothing
 	case 0x76: // HLT
