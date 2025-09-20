@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/signal"
-	"time"
 )
 
 // cpu state i tink
@@ -39,6 +37,8 @@ func (cpu *CPU) fetch() uint8 {
 }
 
 // fetch lil endian word and deport sockman
+//
+//	as hv why are we deporting stockman
 func (cpu *CPU) fetchWord() uint16 {
 	lo := cpu.fetch()
 	hi := cpu.fetch()
@@ -62,6 +62,14 @@ func (cpu *CPU) step() {
 		cpu.B = cpu.fetch()
 	case 0x0E: // MVI C,D8
 		cpu.C = cpu.fetch()
+	case 0x16: // MVI D,D8
+		cpu.D = cpu.fetch()
+	case 0x1E: // MVI E,D8
+		cpu.E = cpu.fetch()
+	case 0x26: // MVI H,D8
+		cpu.H = cpu.fetch()
+	case 0x2E: // MVI L,D8
+		cpu.L = cpu.fetch()
 	case 0x32: // STA adr
 		addr := cpu.fetchWord()
 		cpu.Memory[addr] = cpu.A
@@ -116,7 +124,6 @@ func main() {
 	if *romPath != "" {
 		cpu.LoadROM(*romPath)
 	}
-
 
 	// Main emulation loop
 	for !cpu.Halted {
