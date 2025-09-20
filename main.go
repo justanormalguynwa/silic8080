@@ -72,7 +72,7 @@ func (cpu *CPU) step() {
 		addr := cpu.fetchWord()
 		cpu.PC = addr
 	default:
-		fmt.Printf("Unimplemented opcode %02X (%s)\n", op, mnemonic)
+		fmt.Printf("Unimplemented opcode %02X (%s)\n", opcode, mnemonic)
 		cpu.Halted = true
 	}
 }
@@ -105,7 +105,6 @@ func main() {
 	romPath := flag.String("rom", "", "Path to ROM .bin file")
 	memSize := flag.Int("mem", 64*1024, "Memory size in bytes (default 64KB)")
 	mhz := flag.Float64("mhz", 2.0, "Clock speed in MHz")
-	manual := flag.Bool("manual", false, "Enter manual opcode mode")
 	flag.Parse()
 
 	cpu := &CPU{
@@ -118,24 +117,6 @@ func main() {
 		cpu.LoadROM(*romPath)
 	}
 
-	// grab Ctrl+C to drop into manual mode
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-
-	clk := time.Duration(float64(time.Second) / (*mhz * 1e6))
-	ticker := time.NewTicker(clk)
-	defer ticker.Stop()
-
-	go func() {
-		<-c
-		fmt.Println("\nCTRL+C detected. Switching to manual opcode mode...")
-		cpu.manualMode()
-	}()
-
-	if *manual {
-		cpu.manualMode()
-		return
-	}
 
 	// Main emulation loop
 	for !cpu.Halted {
