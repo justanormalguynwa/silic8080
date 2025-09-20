@@ -109,9 +109,9 @@ func (cpu *CPU) fetchWord() uint16 {
 func (cpu *CPU) push(val uint16) {
 	hi := uint8(val >> 8)
 	lo := uint8(val)
-	cpu.Memory[cpu.SP-1] = hi
-	cpu.Memory[cpu.SP-2] = lo
 	cpu.SP -= 2
+	cpu.Memory[cpu.SP] = lo
+	cpu.Memory[cpu.SP+1] = hi
 }
 
 // pop a word from the stack
